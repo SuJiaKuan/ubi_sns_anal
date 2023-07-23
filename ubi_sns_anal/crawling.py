@@ -15,14 +15,20 @@ def parse_fb_url(fb_url):
     raise ValueError(f"Invalid Facebook URL: {fb_url}")
 
 
-def crawl_fb_posts(fb_id, output_path, pages=99999, timeout=3000):
+def crawl_fb_posts(
+    fb_id,
+    cookies_path,
+    output_path,
+    pages=99999,
+    timeout=3000,
+):
     cmd = \
         f"facebook-scraper " \
         f"--filename {output_path} " \
         f"--pages {pages} " \
         f"--no-extra-requests " \
         f"--timeout {timeout} " \
-        f"--cookies \"from_browser\" " \
+        f"--cookies {cookies_path} " \
         f"{fb_id}"
 
     return os.system(cmd)

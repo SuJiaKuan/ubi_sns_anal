@@ -22,6 +22,11 @@ def parse_args():
         help="Path to .CSV file that lists the people for crawling",
     )
     parser.add_argument(
+        "fb_cookies",
+        type=str,
+        help="Path to facebook cookies file (cookies.txt)",
+    )
+    parser.add_argument(
         "--workers",
         type=int,
         default=1,
@@ -40,7 +45,7 @@ def parse_args():
     return args
 
 
-def crawl_fb(info, ok_dir, ng_dir):
+def crawl_fb(info, cookies_path, ok_dir, ng_dir):
     party = info["Party"]
     name = info["Name"]
     fb_url = info["Facebook ID"]
@@ -63,7 +68,7 @@ def crawl_fb(info, ok_dir, ng_dir):
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_path = os.path.join(tmp_dir, filename)
-        return_code = crawl_fb_posts(fb_id, tmp_path)
+        return_code = crawl_fb_posts(fb_id, cookies_path, tmp_path)
 
         if return_code == 0:
             copyfile(tmp_path, os.path.join(ok_dir, filename))
@@ -87,6 +92,7 @@ def main(args):
         executor.map(
             crawl_fb,
             infos,
+            [args.fb_cookies] * len(infos),
             [ok_dir] * len(infos),
             [ng_dir] * len(infos),
         )
