@@ -1,1 +1,1 @@
-# Basic Income Attitude Analysis for Taiwanese Polical People on Facebook
+# Basic Income Attitude Analysis for Taiwanese Polical People on SNS
