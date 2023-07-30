@@ -38,6 +38,13 @@ def parse_args():
     return args
 
 
+def is_failed_msg(msg):
+    return any([
+        failed_text in msg.lower()
+        for failed_text in ("exception", "error")
+    ])
+
+
 def crawl_fb(info, cookies_path, ok_dir, ng_dir):
     party = info["Party"]
     name = info["Name"]
@@ -61,12 +68,17 @@ def crawl_fb(info, cookies_path, ok_dir, ng_dir):
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_path = os.path.join(tmp_dir, filename)
-        return_code = crawl_fb_posts(fb_id, cookies_path, tmp_path)
 
-        if return_code == 0:
+        try:
+            out_msg = crawl_fb_posts(fb_id, cookies_path, tmp_path)
+            print(out_msg)
+
+            if is_failed_msg(out_msg):
+                raise RuntimeError()
+
             copyfile(tmp_path, os.path.join(ok_dir, filename))
             print(f"Success to crawl {shown_name}")
-        else:
+        except Exception:
             copyfile(tmp_path, os.path.join(ng_dir, filename))
             print(f"Fail to crawl {shown_name}")
 

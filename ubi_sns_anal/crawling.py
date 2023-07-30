@@ -1,4 +1,4 @@
-import os
+import subprocess
 
 
 _VALID_FB_URL_PREFIXS = (
@@ -35,4 +35,10 @@ def crawl_fb_posts(
         f"{extra_str} " \
         f"{fb_id}"
 
-    return os.system(cmd)
+    out_msg = subprocess.check_output(
+        [cmd],
+        stderr=subprocess.STDOUT,
+        shell=True,
+    )
+
+    return out_msg.decode()
