@@ -1,7 +1,6 @@
 import argparse
 import os
 import tempfile
-from concurrent.futures import ProcessPoolExecutor
 from shutil import copyfile
 
 import pandas as pd
@@ -25,12 +24,6 @@ def parse_args():
         "fb_cookies",
         type=str,
         help="Path to facebook cookies file (cookies.txt)",
-    )
-    parser.add_argument(
-        "--workers",
-        type=int,
-        default=1,
-        help="Number of workers",
     )
     parser.add_argument(
         "-o",
@@ -88,14 +81,8 @@ def main(args):
     df_lst = pd.read_csv(args.lst, dtype=str, keep_default_na=False)
     infos = [info for _, info in df_lst.iterrows()]
 
-    with ProcessPoolExecutor(args.workers) as executor:
-        executor.map(
-            crawl_fb,
-            infos,
-            [args.fb_cookies] * len(infos),
-            [ok_dir] * len(infos),
-            [ng_dir] * len(infos),
-        )
+    for info in infos:
+        crawl_fb(info, args.fb_cookies, ok_dir, ng_dir)
 
 
 if __name__ == "__main__":
