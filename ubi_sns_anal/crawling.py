@@ -21,6 +21,7 @@ def crawl_fb_posts(
     output_path,
     pages=99999,
     timeout=3000,
+    sleep=2,
     extra=False,
 ):
     extra_str = "" if extra else "--no-extra-requests"
@@ -29,6 +30,7 @@ def crawl_fb_posts(
         f"--filename {output_path} " \
         f"--pages {pages} " \
         f"--timeout {timeout} " \
+        f"--sleep {sleep} " \
         f"--cookies {cookies_path} " \
         f"{extra_str} " \
         f"{fb_id}"
