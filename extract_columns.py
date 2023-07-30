@@ -47,7 +47,6 @@ def parse_args():
 
 def extract_columns(src_path, output_dir):
     df = pd.read_csv(src_path)
-    print(df.columns)
 
     if list(SCRAPER_MAPPING.keys())[0] in list(df.columns):
         mapping = SCRAPER_MAPPING
@@ -68,6 +67,8 @@ def main(args):
     src_paths = glob(os.path.join(args.data, "*.csv"))
     for src_path in src_paths:
         extract_columns(src_path, args.output)
+
+    print(f"Results saved in {args.output}")
 
 
 if __name__ == "__main__":
