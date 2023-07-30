@@ -4,20 +4,21 @@ from glob import glob
 
 import pandas as pd
 
+from ubi_sns_anal.const import COLUMN_NAME
 from ubi_sns_anal.io import mkdir_p
 
 
 SCRAPER_MAPPING = {
-    "post_id": "post_id",
-    "text": "text",
-    "time": "time",
-    "post_url": "post_url",
+    "post_id": COLUMN_NAME.POST_ID,
+    "text": COLUMN_NAME.TEXT,
+    "time": COLUMN_NAME.TIME,
+    "post_url": COLUMN_NAME.POST_URL,
 }
 EXTENSION_MAPPING = {
-    "Post Id": "post_id",
-    "Content": "text",
-    "Posted At": "time",
-    "Post Url": "post_url",
+    "Post Id": COLUMN_NAME.POST_ID,
+    "Content": COLUMN_NAME.TEXT,
+    "Posted At": COLUMN_NAME.TIME,
+    "Post Url": COLUMN_NAME.POST_URL,
 }
 
 
