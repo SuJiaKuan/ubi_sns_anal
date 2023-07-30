@@ -41,7 +41,7 @@ def parse_args():
 def is_failed_msg(msg):
     return any([
         failed_text in msg.lower()
-        for failed_text in ("exception", "error")
+        for failed_text in ("exception", "error", "couldn't get any posts")
     ])
 
 
