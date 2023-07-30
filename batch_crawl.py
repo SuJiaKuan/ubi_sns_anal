@@ -57,7 +57,7 @@ def crawl_fb(info, cookies_path, ok_dir, ng_dir):
         return
 
     fb_id = parse_fb_url(fb_url)
-    uid = f"{party}_{name}_{fb_id}".replace("; ", "-")
+    uid = f"{party}_{name}".replace("; ", "-").replace(" ", "")
 
     filename = f"{uid}.csv"
     ok_path = os.path.join(ok_dir, filename)
