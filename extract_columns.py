@@ -3,6 +3,7 @@ import os
 from glob import glob
 
 import pandas as pd
+from tqdm import tqdm
 
 from ubi_sns_anal.const import COLUMN_NAME
 from ubi_sns_anal.io import mkdir_p
@@ -28,9 +29,10 @@ def parse_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        "data",
+        "data_dirs",
         type=str,
-        help="Path to directory that contains the raw data",
+        nargs="+",
+        help="Path to directories that contains the raw data",
     )
     parser.add_argument(
         "-o",
@@ -45,7 +47,17 @@ def parse_args():
     return args
 
 
-def extract_columns(src_path, output_dir):
+def gather_same_paths(data_dirs):
+    name2paths = {}
+    for data_dir in data_dirs:
+        for src_path in glob(os.path.join(data_dir, "*.csv")):
+            name = os.path.basename(src_path)
+            name2paths.setdefault(name, []).append(src_path)
+
+    return list(name2paths.values())
+
+
+def transform_columns(src_path):
     df = pd.read_csv(src_path)
 
     if list(SCRAPER_MAPPING.keys())[0] in list(df.columns):
@@ -55,8 +67,20 @@ def extract_columns(src_path, output_dir):
 
     df = df[mapping].rename(columns=mapping)
 
+    return df
+
+
+def extract_columns(src_paths, output_dir):
+    dfs = [transform_columns(src_path) for src_path in src_paths]
+    df = pd.concat(dfs)
+    df.index = df[COLUMN_NAME.TEXT].str.len()
+    df = df.sort_index(ascending=False).reset_index(drop=True)
+    df = df.drop_duplicates(subset=[COLUMN_NAME.POST_ID])
+    df = df.sort_values(COLUMN_NAME.TIME)
+    df = df.reset_index()
+
     df.to_csv(
-        os.path.join(output_dir, os.path.basename(src_path)),
+        os.path.join(output_dir, os.path.basename(src_paths[0])),
         index=False,
     )
 
@@ -64,9 +88,9 @@ def extract_columns(src_path, output_dir):
 def main(args):
     mkdir_p(args.output)
 
-    src_paths = glob(os.path.join(args.data, "*.csv"))
-    for src_path in src_paths:
-        extract_columns(src_path, args.output)
+    src_paths_lst = gather_same_paths(args.data_dirs)
+    for src_paths in tqdm(src_paths_lst):
+        extract_columns(src_paths, args.output)
 
     print(f"Results saved in {args.output}")
 
