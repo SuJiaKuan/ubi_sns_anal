@@ -1,4 +1,5 @@
 import argparse
+import datetime
 import os
 from glob import glob
 
@@ -21,6 +22,8 @@ EXTENSION_MAPPING = {
     "Posted At": COLUMN_NAME.TIME,
     "Post Url": COLUMN_NAME.POST_URL,
 }
+
+OLDEST_TIME = datetime.datetime(2008, 1, 1, 0, 0)
 
 
 def parse_args():
@@ -77,6 +80,7 @@ def extract_columns(src_paths, output_dir):
     df = df.sort_index(ascending=False).reset_index(drop=True)
     df = df.drop_duplicates(subset=[COLUMN_NAME.POST_ID])
     df = df.sort_values(COLUMN_NAME.TIME)
+    df = df[pd.to_datetime(df[COLUMN_NAME.TIME]) >= OLDEST_TIME]
     df = df.reset_index()
 
     df.to_csv(
