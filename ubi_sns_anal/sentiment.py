@@ -43,8 +43,8 @@ def _analyze_sentiment_gpt(text):
     return response
 
 
-def analyze_sentiment_gpt(text):
-    response = _analyze_sentiment_gpt(text)
+def analyze_sentiment_gpt(text, max_len=2900):
+    response = _analyze_sentiment_gpt(text[:max_len])
     result = min(
         [SENT.POSITIVE, SENT.NEGATIVE, SENT.NEUTRAL],
         key=lambda label: editdistance.eval(response, label)
