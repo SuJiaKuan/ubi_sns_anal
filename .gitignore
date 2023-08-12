@@ -162,3 +162,4 @@ tags
 
 # Default paths to (generated) files or directories
 /output
+/__compute_cache__
