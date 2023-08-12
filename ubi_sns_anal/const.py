@@ -5,3 +5,9 @@ class COLUMN_NAME:
     TIME = "time"
     POST_URL = "post_url"
     KEYWORDS = "keywords"
+
+
+class SENTIMENT:
+    POSITIVE = "POSITIVE"
+    NEGATIVE = "NEGATIVE"
+    NEUTRAL = "NEUTRAL"
