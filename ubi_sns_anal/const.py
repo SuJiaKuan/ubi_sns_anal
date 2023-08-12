@@ -5,6 +5,7 @@ class COLUMN_NAME:
     TIME = "time"
     POST_URL = "post_url"
     KEYWORDS = "keywords"
+    SENTMENT_GPT = "sentiment_gpt"
 
 
 class SENTIMENT:
