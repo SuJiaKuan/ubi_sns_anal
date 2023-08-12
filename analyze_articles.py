@@ -44,6 +44,9 @@ TOPIC_KEYWORDS_MAPPING = {
         "好食券",
         "地方創生券",
     ),
+    "elder_allowance": (
+        "重陽+敬老金",
+    )
 }
 TOPIC_KEYWORDS_MAPPING["all"] = [
     keyword
