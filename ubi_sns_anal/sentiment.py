@@ -43,7 +43,7 @@ def _analyze_sentiment_gpt(text):
     return response
 
 
-def analyze_sentiment_gpt(text, max_len=2900):
+def analyze_sentiment_gpt(text, max_len=2850):
     response = _analyze_sentiment_gpt(text[:max_len])
     result = min(
         [SENT.POSITIVE, SENT.NEGATIVE, SENT.NEUTRAL],
