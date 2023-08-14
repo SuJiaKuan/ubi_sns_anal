@@ -45,7 +45,12 @@ TOPIC_KEYWORDS_MAPPING = {
         "地方創生券",
     ),
     "elder_allowance": (
-        "重陽+敬老金",
+        "敬老金",
+        "敬老+禮金",
+        "長者+禮金",
+        "敬老+慰問金",
+        "長者+慰問金",
+        "敬老津貼",
     )
 }
 TOPIC_KEYWORDS_MAPPING["all"] = [
